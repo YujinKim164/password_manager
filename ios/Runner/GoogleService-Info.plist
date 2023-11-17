@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyArZohEPED2IuN01J9cHxv6kcZT2VMJAKw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>259308116793</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.passwordManager</string>
+	<key>PROJECT_ID</key>
+	<string>password-manager-7fbaa</string>
+	<key>STORAGE_BUCKET</key>
+	<string>password-manager-7fbaa.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:259308116793:ios:f9c52a17828116bdc5a6e8</string>
+</dict>
+</plist>

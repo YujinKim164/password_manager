@@ -17,6 +17,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:password_manager/Home/addSocial.dart';
 
 import 'Home/home_page.dart';
 
@@ -53,6 +54,12 @@ class _LoginPageState extends State<LoginPage> {
                   signInWithGoogle();
                 },
               ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddSocial()));
+                }, 
+                child: const Text("ADD")
+              )
             ],
           ),
         ),

@@ -161,15 +161,17 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           onPressed: () {
-            print(_nameController.text);
-            print(_urlController.text);
-            print(_IDController.text);
-            print(_PWController.text);
+            if(_formKey.currentState!.validate()) {
+              print(_nameController.text);
+              print(_urlController.text);
+              print(_IDController.text);
+              print(_PWController.text);
 
-            _nameController.clear();
-            _urlController.clear();
-            _IDController.clear();
-            _PWController.clear();
+              _nameController.clear();
+              _urlController.clear();
+              _IDController.clear();
+              _PWController.clear();
+            }
           },
           child: const Text('Create New'),
         ),

@@ -17,9 +17,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:password_manager/Home/addSocial.dart';
 
 import 'Home/home_page.dart';
+import 'Home/addSocial.dart';
+import 'Home/addBank.dart';
+import 'Home/addCard.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -58,7 +60,19 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddSocial()));
                 }, 
-                child: const Text("ADD")
+                child: const Text("ADDSocial")
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddBank()));
+                }, 
+                child: const Text("ADDBank")
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCard()));
+                }, 
+                child: const Text("ADDCard")
               )
             ],
           ),

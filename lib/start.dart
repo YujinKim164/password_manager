@@ -20,6 +20,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:password_manager/Home/addSocial.dart';
 
 import 'Home/home_page.dart';
+import 'Home/register.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -55,11 +56,22 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddSocial()));
-                }, 
-                child: const Text("ADD")
-              )
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => AddSocial()));
+                  },
+                  child: const Text("ADD")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const RegisterPage()));
+                  },
+                  child: const Text("Register")),
             ],
           ),
         ),

@@ -18,6 +18,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import "Home/register.dart";
 import 'Home/home_page.dart';
 import 'Home/addSocial.dart';
 import 'Home/addBank.dart';
@@ -57,23 +58,38 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddSocial()));
-                }, 
-                child: const Text("ADDSocial")
-              ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const RegisterPage()));
+                  },
+                  child: const Text("Register")),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddBank()));
-                }, 
-                child: const Text("ADDBank")
-              ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => AddSocial()));
+                  },
+                  child: const Text("ADDSocial")),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddCard()));
-                }, 
-                child: const Text("ADDCard")
-              )
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => AddBank()));
+                  },
+                  child: const Text("ADDBank")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => AddCard()));
+                  },
+                  child: const Text("ADDCard"))
             ],
           ),
         ),

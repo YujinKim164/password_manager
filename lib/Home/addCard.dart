@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'addSocial.dart';
 import 'pwGenerator.dart';
 
 class AddCard extends StatefulWidget {
@@ -24,12 +26,12 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
     return FirebaseFirestore.instance
       .collection('collection')
       .add(<String, dynamic>{
-        'thumbnail': cardName,
-        'card_name': cardName,
-        'card_number': cardNumber,
-        'exp': exp,
-        'cvv': cvv,
-        'password': pswd,
+        'thumbnail': encodeString(cardName),
+        'card_name': encodeString(cardName),
+        'card_number': encodeString(cardNumber),
+        'exp': encodeString(exp),
+        'cvv': encodeString(cvv),
+        'password': encodeString(pswd),
         'favorites': 0
       });
   }

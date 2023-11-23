@@ -201,10 +201,10 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
                                                         _IDController.text,
                                                         _PWController.text);
 
-              print(decodeString(encodeString(_nameController.text)));
-              print(decodeString(encodeString(_urlController.text)));
-              print(decodeString(encodeString(_IDController.text)));
-              print(decodeString(encodeString(_PWController.text)));
+              // print(decodeString(encodeString(_nameController.text)));
+              // print(decodeString(encodeString(_urlController.text)));
+              // print(decodeString(encodeString(_IDController.text)));
+              // print(decodeString(encodeString(_PWController.text)));
               
               _nameController.clear();
               _urlController.clear();

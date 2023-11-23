@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:password_manager/app_state.dart';
 import 'pwGenerator.dart';
 
 class AddSocial extends StatefulWidget {
@@ -18,6 +20,19 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
   final _PWController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<DocumentReference> addSocial(String appName, String appLink, String ID, String pswd) async {
+    return FirebaseFirestore.instance
+      .collection('collection')
+      .add(<String, dynamic>{
+        'thumbnail': appName,
+        'app_name': appName,
+        'link': appLink,
+        'ID': ID,
+        'password': pswd,
+        'favorites': 0
+      });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -159,13 +174,18 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton(
-          onPressed: () {
+        child:  ElevatedButton(
+          onPressed: () async {
             if(_formKey.currentState!.validate()) {
               print(_nameController.text);
               print(_urlController.text);
               print(_IDController.text);
               print(_PWController.text);
+
+              DocumentReference docRef = await addSocial(_nameController.text, 
+                                                        _urlController.text,
+                                                        _IDController.text,
+                                                        _PWController.text);
 
               _nameController.clear();
               _urlController.clear();
@@ -174,7 +194,7 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
             }
           },
           child: const Text('Create New'),
-        ),
+        )
       ),
     );
   }

@@ -19,6 +19,20 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
   final _PWController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<DocumentReference> addCard(String cardName, String cardNumber, String exp, String cvv, String pswd) async {
+    return FirebaseFirestore.instance
+      .collection('collection')
+      .add(<String, dynamic>{
+        'thumbnail': cardName,
+        'card_name': cardName,
+        'card_number': cardNumber,
+        'exp': exp,
+        'cvv': cvv,
+        'password': pswd,
+        'favorites': 0
+      });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -189,13 +203,13 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if(_formKey.currentState!.validate()) {
-              print(_cardController.text);
-              print(_numberController.text);
-              print(_EXPController.text);
-              print(_CVVController.text);
-              print(_PWController.text);
+              DocumentReference docRef = await addCard(_cardController.text, 
+                                                _numberController.text,
+                                                _EXPController.text,
+                                                _CVVController.text,
+                                                _PWController.text);
 
               _cardController.clear();
               _numberController.clear();

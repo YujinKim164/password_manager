@@ -14,11 +14,25 @@ class AddBank extends StatefulWidget {
 class _AddBankState extends State<AddBank> with ChangeNotifier {
   final _bankController = TextEditingController();
   final _nameController = TextEditingController();
-  final _urlController = TextEditingController();
+  final _numberController = TextEditingController();
   final _IDController = TextEditingController();
   final _PWController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  Future<DocumentReference> addBank(String bankName, String name, String accountNumber, String ID, String pswd) async {
+    return FirebaseFirestore.instance
+      .collection('collection')
+      .add(<String, dynamic>{
+        'thumbnail': bankName,
+        'bank_name': bankName,
+        'name': name,
+        'card_number': accountNumber,
+        'ID': ID,
+        'password': pswd,
+        'favorites': 0
+      });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -97,10 +111,10 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                   ),
                 ),
                 child: TextFormField(
-                  controller: _urlController,
+                  controller: _numberController,
                   decoration: InputDecoration(
                     filled: true,
-                    label: const Text("Website / AppLink"),
+                    label: const Text("Account Number"),
                     contentPadding: const EdgeInsets.all(5.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
@@ -189,17 +203,17 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if(_formKey.currentState!.validate()) {
-              print(_bankController.text);
-              print(_nameController.text);
-              print(_urlController.text);
-              print(_IDController.text);
-              print(_PWController.text);
+              DocumentReference docRef = await addBank(_bankController.text, 
+                                                      _nameController.text, 
+                                                      _numberController.text,
+                                                      _IDController.text,
+                                                      _PWController.text);
 
               _bankController.clear();
               _nameController.clear();
-              _urlController.clear();
+              _numberController.clear();
               _IDController.clear();
               _PWController.clear();
             }

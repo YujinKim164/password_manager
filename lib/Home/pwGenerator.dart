@@ -12,12 +12,19 @@ class PWGenerator extends StatefulWidget {
 }
 
 class _PWGeneratorState extends State<PWGenerator> with ChangeNotifier {
+  final _formKey = GlobalKey<FormState>();
 
   @override 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Generate Password"),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          
+        ],
       ),
     );
   }

@@ -2,9 +2,28 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:encrypt/encrypt.dart'as en;
 
 import 'package:password_manager/app_state.dart';
 import 'pwGenerator.dart';
+
+String encodeString(String text) {
+
+  final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
+  final iv = en.IV.fromLength(16);
+  final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
+
+  return encrypter.encrypt(text, iv:iv).base64;
+}
+
+String decodeString(String text) {
+
+  final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
+  final iv = en.IV.fromLength(16);
+  final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
+  
+  return encrypter.decrypt64(text, iv:iv);
+}
 
 class AddSocial extends StatefulWidget {
   AddSocial({Key? key}) : super(key: key);
@@ -25,11 +44,11 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
     return FirebaseFirestore.instance
       .collection('collection')
       .add(<String, dynamic>{
-        'thumbnail': appName,
-        'app_name': appName,
-        'link': appLink,
-        'ID': ID,
-        'password': pswd,
+        'thumbnail': encodeString(appName),
+        'app_name': encodeString(appName),
+        'link': encodeString(appLink),
+        'ID': encodeString(ID),
+        'password': encodeString(pswd),
         'favorites': 0
       });
   }
@@ -177,16 +196,16 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
         child:  ElevatedButton(
           onPressed: () async {
             if(_formKey.currentState!.validate()) {
-              print(_nameController.text);
-              print(_urlController.text);
-              print(_IDController.text);
-              print(_PWController.text);
-
               DocumentReference docRef = await addSocial(_nameController.text, 
                                                         _urlController.text,
                                                         _IDController.text,
                                                         _PWController.text);
 
+              print(decodeString(encodeString(_nameController.text)));
+              print(decodeString(encodeString(_urlController.text)));
+              print(decodeString(encodeString(_IDController.text)));
+              print(decodeString(encodeString(_PWController.text)));
+              
               _nameController.clear();
               _urlController.clear();
               _IDController.clear();

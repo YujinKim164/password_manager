@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'addSocial.dart';
+import 'addCard.dart';
 import 'pwGenerator.dart';
+
+final bankPWController = TextEditingController();
 
 class AddBank extends StatefulWidget {
   AddBank({Key? key}) : super(key: key);
@@ -18,7 +21,6 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
   final _nameController = TextEditingController();
   final _numberController = TextEditingController();
   final _IDController = TextEditingController();
-  final _PWController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -169,7 +171,7 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                   ),
                 ),
                 child: TextFormField(
-                  controller: _PWController,
+                  controller: bankPWController,
                   decoration: InputDecoration(
                     filled: true,
                     label: const Text("Password"),
@@ -211,13 +213,15 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                                                       _nameController.text, 
                                                       _numberController.text,
                                                       _IDController.text,
-                                                      _PWController.text);
+                                                      bankPWController.text);
 
               _bankController.clear();
               _nameController.clear();
               _numberController.clear();
               _IDController.clear();
-              _PWController.clear();
+              bankPWController.clear();
+              cardPWController.clear();
+              socialPWController.clear();
             }
           },
           child: const Text('Create New'),

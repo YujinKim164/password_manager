@@ -4,6 +4,9 @@ import 'package:gpassword/gpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'addSocial.dart';
+import 'addBank.dart';
+import 'addCard.dart';
 
 class PWGenerator extends StatefulWidget {
   PWGenerator({Key? key}) : super(key: key);
@@ -32,6 +35,9 @@ class _PWGeneratorState extends State<PWGenerator> with ChangeNotifier {
             onPressed: () {
               setState(() {
                 _pswd = GPassword().generate();
+                socialPWController.text = _pswd;
+                bankPWController.text = _pswd;
+                cardPWController.text = _pswd;
               });
             }, 
             child: Text("Generate")

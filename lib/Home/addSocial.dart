@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:password_manager/Home/addBank.dart';
+import 'package:password_manager/Home/addCard.dart';
 import 'package:provider/provider.dart';
 import 'package:encrypt/encrypt.dart'as en;
 
 import 'package:password_manager/app_state.dart';
 import 'pwGenerator.dart';
+
+final socialPWController = TextEditingController();
 
 String encodeString(String text) {
 
@@ -36,7 +40,6 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
   final _nameController = TextEditingController();
   final _urlController = TextEditingController();
   final _IDController = TextEditingController();
-  final _PWController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -158,7 +161,7 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
                   ),
                 ),
                 child: TextFormField(
-                  controller: _PWController,
+                  controller: socialPWController,
                   decoration: InputDecoration(
                     filled: true,
                     label: const Text("Password"),
@@ -199,17 +202,19 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
               DocumentReference docRef = await addSocial(_nameController.text, 
                                                         _urlController.text,
                                                         _IDController.text,
-                                                        _PWController.text);
+                                                        socialPWController.text);
 
               // print(decodeString(encodeString(_nameController.text)));
               // print(decodeString(encodeString(_urlController.text)));
               // print(decodeString(encodeString(_IDController.text)));
-              // print(decodeString(encodeString(_PWController.text)));
+              // print(decodeString(encodeString(socialPWController.text)));
               
               _nameController.clear();
               _urlController.clear();
               _IDController.clear();
-              _PWController.clear();
+              socialPWController.clear();
+              bankPWController.clear();
+              cardPWController.clear();
             }
           },
           child: const Text('Create New'),

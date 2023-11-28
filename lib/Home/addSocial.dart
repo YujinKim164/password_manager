@@ -1,34 +1,77 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:password_manager/Home/addBank.dart';
 import 'package:password_manager/Home/addCard.dart';
 import 'package:provider/provider.dart';
-import 'package:encrypt/encrypt.dart'as en;
+import 'dart:typed_data';
+import 'package:pointycastle/pointycastle.dart' as pt;
 
 import 'package:password_manager/app_state.dart';
 import 'pwGenerator.dart';
 
 final socialPWController = TextEditingController();
+const ekey = "abcdefghijtuvwxyz1234klmnopqrs56";
 
-String encodeString(String text) {
-
-  // final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
-  // final iv = en.IV.fromLength(16);
-  // final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
-
-  // return encrypter.encrypt(text, iv:iv).base64;
-  return text;
+Uint8List padBlock(Uint8List input, int blockSize) {
+  final padLength = blockSize - (input.length % blockSize);
+  final padded = Uint8List(input.length + padLength);
+  padded.setAll(0, input);
+  for (var i = input.length; i < padded.length; i++) {
+    padded[i] = padLength;
+  }
+  return padded;
 }
 
-String decodeString(String text) {
+Uint8List removePadding(Uint8List input) {
+  final padLength = input.last;
+  return input.sublist(0, input.length - padLength);
+}
 
-  // final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
-  // final iv = en.IV.fromLength(16);
-  // final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
-  
-  // return encrypter.decrypt64(text, iv:iv);
-  return text;
+Uint8List encryptBytes(pt.BlockCipher cipher, Uint8List input) {
+  final blockSize = cipher.blockSize;
+  final paddedInput = padBlock(input, blockSize);
+  final result = Uint8List(paddedInput.length);
+  for (var i = 0; i < paddedInput.length; i += blockSize) {
+    cipher.processBlock(paddedInput, i, result, i);
+  }
+  return result;
+}
+
+Uint8List decryptBytes(pt.BlockCipher cipher, Uint8List input) {
+  final blockSize = cipher.blockSize;
+  final result = Uint8List(input.length);
+  for (var i = 0; i < input.length; i += blockSize) {
+    cipher.processBlock(input, i, result, i);
+  }
+  return removePadding(result);
+}
+
+String encodeString(String text) {
+  final keyBytes = Uint8List.fromList(utf8.encode(ekey));
+    final iv = Uint8List(16);
+    final cipher = pt.BlockCipher("AES/CBC")..init(true, pt.ParametersWithIV(pt.KeyParameter(keyBytes), iv));
+
+    final inputBytes = Uint8List.fromList(utf8.encode(text));
+    final encryptedBytes = encryptBytes(cipher, inputBytes);
+
+    final encryptedText = base64.encode(encryptedBytes);
+
+    return encryptedText;
+}
+
+String decodeString(String encrpyted) {
+  final keyBytes = Uint8List.fromList(utf8.encode(ekey));
+  final iv = Uint8List(16);
+  final cipher = pt.BlockCipher("AES/CBC")..init(false, pt.ParametersWithIV(pt.KeyParameter(keyBytes), iv));
+
+  final encryptedBytes = base64.decode(encrpyted);
+  final decryptedBytes = decryptBytes(cipher, encryptedBytes);
+
+  final decryptedText = utf8.decode(decryptedBytes);
+
+  return decryptedText;
 }
 
 class AddSocial extends StatefulWidget {
@@ -49,9 +92,9 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
     return FirebaseFirestore.instance
       .collection('collection')
       .add(<String, dynamic>{
-        'thumbnail': encodeString(appName),
-        'app_name': encodeString(appName),
-        'link': encodeString(appLink),
+        'thumbnail': appName,
+        'app_name': appName,
+        'link': appLink,
         'ID': encodeString(ID),
         'password': encodeString(pswd),
         'favorites': 0
@@ -206,10 +249,8 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
                                                         _IDController.text,
                                                         socialPWController.text);
 
-              // print(decodeString(encodeString(_nameController.text)));
-              // print(decodeString(encodeString(_urlController.text)));
-              // print(decodeString(encodeString(_IDController.text)));
-              // print(decodeString(encodeString(socialPWController.text)));
+              print(encodeString(_nameController.text));
+              print(decodeString(encodeString(_nameController.text)));
               
               _nameController.clear();
               _urlController.clear();

@@ -62,12 +62,24 @@ class _HomePageState extends State<HomePage> {
               });
 
               // Navigate to the corresponding page based on the selected category
-              if (selectedCategory != 'Please select a category') {
+              if (selectedCategory == 'social') {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomePage(),
+                    builder: (context) => AddSocial(),
                   ),
+                );
+              }
+              if (selectedCategory == 'accounts') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddBank()),
+                );
+              }
+              if (selectedCategory == 'cards') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddCard()),
                 );
               }
             },

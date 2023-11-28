@@ -17,35 +17,96 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
-        ),
-        body: const Center(
-          child: Text(
-            'Welcome to the Password Manager!',
-            style: TextStyle(fontSize: 20.0),
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildCategoryCard(
+            context,
+            'Socials',
+            Icons.people,
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddSocial()),
+              );
+            },
+          ),
+          _buildCategoryCard(
+            context,
+            'Accounts',
+            Icons.account_balance_wallet,
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddBank()),
+              );
+            },
+          ),
+          _buildCategoryCard(
+            context,
+            'Cards',
+            Icons.credit_card,
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddCard()),
+              );
+            },
+          ),
+        ],
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              _showCategoryDialog(context);
+            },
+            child: const Icon(Icons.add),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
+            child: const Icon(Icons.person),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryCard(
+    BuildContext context,
+    String categoryName,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        margin: const EdgeInsets.all(16.0),
+        child: Container(
+          height: 120.0, // Set the desired height
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 40.0),
+              const SizedBox(height: 8.0),
+              Text(
+                categoryName,
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FloatingActionButton(
-              onPressed: () {
-                _showCategoryDialog(context);
-              },
-              child: const Icon(Icons.add),
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-              },
-              child: const Icon(Icons.person),
-            ),
-          ],
-        ));
+      ),
+    );
   }
 
   Future<void> _showCategoryDialog(BuildContext context) async {

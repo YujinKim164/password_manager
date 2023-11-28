@@ -13,20 +13,22 @@ final socialPWController = TextEditingController();
 
 String encodeString(String text) {
 
-  final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
-  final iv = en.IV.fromLength(16);
-  final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
+  // final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
+  // final iv = en.IV.fromLength(16);
+  // final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
 
-  return encrypter.encrypt(text, iv:iv).base64;
+  // return encrypter.encrypt(text, iv:iv).base64;
+  return text;
 }
 
 String decodeString(String text) {
 
-  final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
-  final iv = en.IV.fromLength(16);
-  final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
+  // final key = en.Key.fromUtf8("XyZaBcDeFgHiJkLm");
+  // final iv = en.IV.fromLength(16);
+  // final encrypter = en.Encrypter(en.AES(key, mode:en.AESMode.cbc));
   
-  return encrypter.decrypt64(text, iv:iv);
+  // return encrypter.decrypt64(text, iv:iv);
+  return text;
 }
 
 class AddSocial extends StatefulWidget {

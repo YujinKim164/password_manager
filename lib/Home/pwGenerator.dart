@@ -59,7 +59,6 @@ class _PWGeneratorState extends State<PWGenerator> with ChangeNotifier {
                     _pswd = GPassword().generate(passwordLength: dropdownValue,);
                     socialPWController.text = _pswd;
                     bankPWController.text = _pswd;
-                    cardPWController.text = _pswd;
                   });
                 }, 
                 child: Text("Generate")

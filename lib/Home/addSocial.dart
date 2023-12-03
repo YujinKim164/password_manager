@@ -50,15 +50,15 @@ Uint8List decryptBytes(pt.BlockCipher cipher, Uint8List input) {
 
 String encodeString(String text) {
   final keyBytes = Uint8List.fromList(utf8.encode(ekey));
-    final iv = Uint8List(16);
-    final cipher = pt.BlockCipher("AES/CBC")..init(true, pt.ParametersWithIV(pt.KeyParameter(keyBytes), iv));
+  final iv = Uint8List(16);
+  final cipher = pt.BlockCipher("AES/CBC")..init(true, pt.ParametersWithIV(pt.KeyParameter(keyBytes), iv));
 
-    final inputBytes = Uint8List.fromList(utf8.encode(text));
-    final encryptedBytes = encryptBytes(cipher, inputBytes);
+  final inputBytes = Uint8List.fromList(utf8.encode(text));
+  final encryptedBytes = encryptBytes(cipher, inputBytes);
 
-    final encryptedText = base64.encode(encryptedBytes);
+  final encryptedText = base64.encode(encryptedBytes);
 
-    return encryptedText;
+  return text;
 }
 
 String decodeString(String encrpyted) {

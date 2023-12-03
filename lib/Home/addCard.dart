@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 
 import 'addSocial.dart';
 import 'addSocial.dart';
@@ -22,8 +23,27 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
   final _numberController = TextEditingController();
   final _EXPController = TextEditingController();
   final _CVVController = TextEditingController();
+  final _PWController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
+  final _cardNameKey = GlobalKey<FormState>();
+  final _pwKey = GlobalKey<FormState>();
+
+  bool isLightTheme = false;
+  String cardNumber = '';
+  String expiryDate = '';
+  String cardHolderName = '';
+  String cvvCode = '';
+  bool isCvvFocused = false;
+  bool useGlassMorphism = false;
+  bool useBackgroundImage = false;
+  bool useFloatingAnimation = true;
+  final OutlineInputBorder border = OutlineInputBorder(
+    borderSide: BorderSide(
+      color: Colors.grey.withOpacity(0.7),
+      width: 2.0,
+    ),
+  );
+final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Future<DocumentReference> addCard(String cardName, String cardNumber, String exp, String cvv, String pswd) async {
     return FirebaseFirestore.instance
@@ -41,188 +61,166 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
   
   @override
   Widget build(BuildContext context) {
+    void _onValidate() {
+      if (formKey.currentState?.validate() ?? false) {
+        print('valid!');
+      } else {
+        print('invalid!');
+      }
+    }
+
+    Glassmorphism? _getGlassmorphismConfig() {
+      if (!useGlassMorphism) {
+        return null;
+      }
+
+      final LinearGradient gradient = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: <Color>[Colors.grey.withAlpha(50), Colors.grey.withAlpha(50)],
+        stops: const <double>[0.3, 0],
+      );
+
+      return isLightTheme
+          ? Glassmorphism(blurX: 8.0, blurY: 16.0, gradient: gradient)
+          : Glassmorphism.defaultConfig();
+    }
+
+    void onCreditCardModelChange(CreditCardModel creditCardModel) {
+      setState(() {
+        cardNumber = creditCardModel.cardNumber;
+        expiryDate = creditCardModel.expiryDate;
+        cardHolderName = creditCardModel.cardHolderName;
+        cvvCode = creditCardModel.cvvCode;
+        isCvvFocused = creditCardModel.isCvvFocused;
+      });
+    }
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Card account"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key : _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
-                child: TextFormField(
-                  controller: _cardController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Card Name"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
-                  ),
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return "Card Name is empty.";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 20,),
-
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
-                child: TextFormField(
-                  controller: _numberController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Credit Card Number"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
-                  ),
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return "Card number is empty.";
-                    }
-                    return null;
-                  },
+      body: Column(
+        children: [
+          CreditCardWidget(
+            enableFloatingCard: useFloatingAnimation,
+            glassmorphismConfig: _getGlassmorphismConfig(),
+            cardNumber: cardNumber,
+            expiryDate: expiryDate,
+            cardHolderName: cardHolderName,
+            cvvCode: cvvCode,
+            bankName: _cardController.text,
+            frontCardBorder: useGlassMorphism
+                ? null
+                : Border.all(color: Colors.grey),
+            backCardBorder: useGlassMorphism
+                ? null
+                : Border.all(color: Colors.grey),
+            showBackView: isCvvFocused,
+            obscureCardNumber: true,
+            obscureCardCvv: true,
+            isHolderNameVisible: true,
+            backgroundImage:
+                useBackgroundImage ? 'password_manager/assets/images/card_bg.png' : null,
+            isSwipeGestureEnabled: true,
+            onCreditCardWidgetChange:
+                (CreditCardBrand creditCardBrand) {},
+            customCardTypeIcons: <CustomCardTypeIcon>[
+              CustomCardTypeIcon(
+                cardType: CardType.mastercard,
+                cardImage: Image.asset(
+                  'password_manager/assets/images/mastercard.png',
+                  height: 48,
+                  width: 48,
                 ),
               ),
-              const SizedBox(height: 20,),
-
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
-                child: TextFormField(
-                  controller: _EXPController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("EXP Date(MM/YY)"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
-                  ),
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return "EXP date empty.";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 20,),
-
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
-                child: TextFormField(
-                  controller: _CVVController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("CVV"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
-                  ),
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return "CVV is empty.";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 20,),
-
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
-                child: TextFormField(
-                  controller: cardPWController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Password"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
-                  ),
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return "Password is empty.";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(height: 20,),
-
-              Align(
-                alignment: Alignment.bottomRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PWGenerator()));
-                  },
-                  child: const Text("Generate"),
-                ),
-              )
             ],
           ),
-        )
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Form(
+                    key: _cardNameKey,
+                    child: TextFormField(
+                      controller: _cardController,
+                        decoration: const InputDecoration(
+                        labelText: "Card name",
+                      ),
+                      validator: (value) {
+                        if(value == null || value.isEmpty) {
+                          return "Cardname is empty";
+                        }
+                        return null;
+                      },
+                    )
+                  ),
+                  CreditCardForm(
+                    formKey: formKey,
+                    obscureCvv: false,
+                    obscureNumber: false,
+                    cardNumber: cardNumber,
+                    cvvCode: cvvCode,
+                    isHolderNameVisible: true,
+                    isCardNumberVisible: true,
+                    isExpiryDateVisible: true,
+                    cardHolderName: cardHolderName,
+                    expiryDate: expiryDate,
+                    inputConfiguration: const InputConfiguration(
+                      cardNumberDecoration: InputDecoration(
+                        labelText: 'Number',
+                        hintText: 'XXXX XXXX XXXX XXXX',
+                      ),
+                      expiryDateDecoration: InputDecoration(
+                        labelText: 'Expired Date',
+                        hintText: 'XX/XX',
+                      ),
+                      cvvCodeDecoration: InputDecoration(
+                        labelText: 'CVV',
+                        hintText: 'XXX',
+                      ),
+                      cardHolderDecoration: InputDecoration(
+                        labelText: 'Card Holder',
+                      ),
+                    ),
+                    onCreditCardModelChange: onCreditCardModelChange,
+                  ),
+                  const SizedBox(height: 20),
+                  Form(
+                    key: _pwKey,
+                    child: TextFormField(
+                      controller: _PWController,
+                        decoration: const InputDecoration(
+                        labelText: "password",
+                      ),
+                      validator: (value) {
+                        if(value == null || value.isEmpty) {
+                          return "password is empty";
+                        }
+                        return null;
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           onPressed: () async {
-            if(_formKey.currentState!.validate()) {
+            if(formKey.currentState!.validate()
+              && _cardNameKey.currentState!.validate()
+              && _pwKey.currentState!.validate()) {
               DocumentReference docRef = await addCard(_cardController.text, 
-                                                _numberController.text,
-                                                _EXPController.text,
-                                                _CVVController.text,
-                                                cardPWController.text);
+                                                      cardNumber, 
+                                                      expiryDate, 
+                                                      cvvCode,
+                                                      _PWController.text);
 
-              _cardController.clear();
-              _numberController.clear();
-              _EXPController.clear();
-              _CVVController.clear();
-              socialPWController.clear();
-              bankPWController.clear();
-              cardPWController.clear();
+              Navigator.pop(context);
             }
           },
           child: const Text('Create New'),

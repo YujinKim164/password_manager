@@ -20,7 +20,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import "Home/register.dart";
 import 'Home/home_page.dart';
-import 'Home/update.dart';
+import 'Home/updateCard.dart';
+import 'Home/updateBank.dart';
+import 'Home/updateSocial.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -74,10 +76,27 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UpdatePage())
+                    MaterialPageRoute(builder: (context) => UpdateCardPage())
                   );
                 }, 
-                child: const Text("update"))
+                child: const Text("UpdateCard")
+              ),
+              ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UpdateBankPage())
+                  );
+                }, 
+                child: const Text("UpdateBank")
+              ),
+              ElevatedButton(onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UpdateSocialPage())
+                  );
+                }, 
+                child: const Text("UpdateSocial")
+              ),
             ],
           ),
         ),

@@ -45,29 +45,18 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
         title: const Text("Add Bank account"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(4.0),
         child: Form(
           key : _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _bankController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Bank Name"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Bank Name"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -77,25 +66,14 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Name of Holder"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Name of Holder"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -105,81 +83,48 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _numberController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Account Number"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Account Number"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
-                      return "URL is empty.";
+                      return "Account Number is empty.";
                     }
                     return null;
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _IDController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Email / ID"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Email / ID"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
-                      return "ID is empty.";
+                      return "Email / ID is empty.";
                     }
                     return null;
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: bankPWController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Password"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Password"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -189,7 +134,7 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
               Align(
                 alignment: Alignment.bottomRight,
@@ -215,13 +160,7 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                                                       _IDController.text,
                                                       bankPWController.text);
 
-              _bankController.clear();
-              _nameController.clear();
-              _numberController.clear();
-              _IDController.clear();
-              bankPWController.clear();
-              cardPWController.clear();
-              socialPWController.clear();
+              Navigator.pop(context);
             }
           },
           child: const Text('Create New'),

@@ -25,11 +25,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Save your password here!',
       initialRoute: '/login',
-      theme: ThemeData(brightness: Brightness.dark),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-      ),
-      themeMode: ThemeMode.dark,
+      // theme: ThemeData(brightness: Brightness.dark),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      // ),
+      // themeMode: ThemeMode.dark,
       routes: {
         '/login': (BuildContext context) => const LoginPage(),
         '/': (BuildContext context) => const HomePage(),

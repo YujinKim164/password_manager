@@ -43,22 +43,23 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
       width: 2.0,
     ),
   );
-final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Future<DocumentReference> addCard(String cardName, String cardNumber, String exp, String cvv, String pswd) async {
+  Future<DocumentReference> addCard(String cardName, String cardNumber,
+      String exp, String cvv, String pswd) async {
     return FirebaseFirestore.instance
-      .collection('collection')
-      .add(<String, dynamic>{
-        'thumbnail': encodeString(cardName),
-        'card_name': encodeString(cardName),
-        'card_number': encodeString(cardNumber),
-        'exp': encodeString(exp),
-        'cvv': encodeString(cvv),
-        'password': encodeString(pswd),
-        'favorites': 0
-      });
+        .collection('collection')
+        .add(<String, dynamic>{
+      'thumbnail': encodeString(cardName),
+      'card_name': encodeString(cardName),
+      'card_number': encodeString(cardNumber),
+      'exp': encodeString(exp),
+      'cvv': encodeString(cvv),
+      'password': encodeString(pswd),
+      'favorites': 0
+    });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     void _onValidate() {
@@ -95,7 +96,7 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
         isCvvFocused = creditCardModel.isCvvFocused;
       });
     }
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Card account"),
@@ -110,21 +111,19 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
             cardHolderName: cardHolderName,
             cvvCode: cvvCode,
             bankName: _cardController.text,
-            frontCardBorder: useGlassMorphism
-                ? null
-                : Border.all(color: Colors.grey),
-            backCardBorder: useGlassMorphism
-                ? null
-                : Border.all(color: Colors.grey),
+            frontCardBorder:
+                useGlassMorphism ? null : Border.all(color: Colors.grey),
+            backCardBorder:
+                useGlassMorphism ? null : Border.all(color: Colors.grey),
             showBackView: isCvvFocused,
             obscureCardNumber: true,
             obscureCardCvv: true,
             isHolderNameVisible: true,
-            backgroundImage:
-                useBackgroundImage ? 'password_manager/assets/images/card_bg.png' : null,
+            backgroundImage: useBackgroundImage
+                ? 'password_manager/assets/images/card_bg.png'
+                : null,
             isSwipeGestureEnabled: true,
-            onCreditCardWidgetChange:
-                (CreditCardBrand creditCardBrand) {},
+            onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
             customCardTypeIcons: <CustomCardTypeIcon>[
               CustomCardTypeIcon(
                 cardType: CardType.mastercard,
@@ -141,20 +140,19 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
               child: Column(
                 children: <Widget>[
                   Form(
-                    key: _cardNameKey,
-                    child: TextFormField(
-                      controller: _cardController,
+                      key: _cardNameKey,
+                      child: TextFormField(
+                        controller: _cardController,
                         decoration: const InputDecoration(
-                        labelText: "Card name",
-                      ),
-                      validator: (value) {
-                        if(value == null || value.isEmpty) {
-                          return "Cardname is empty";
-                        }
-                        return null;
-                      },
-                    )
-                  ),
+                          labelText: "Card name",
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Cardname is empty";
+                          }
+                          return null;
+                        },
+                      )),
                   CreditCardForm(
                     formKey: formKey,
                     obscureCvv: false,
@@ -190,11 +188,11 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
                     key: _pwKey,
                     child: TextFormField(
                       controller: _PWController,
-                        decoration: const InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "password",
                       ),
                       validator: (value) {
-                        if(value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return "password is empty";
                         }
                         return null;
@@ -211,14 +209,11 @@ final GlobalKey<FormState> formKey = GlobalKey<FormState>();
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           onPressed: () async {
-            if(formKey.currentState!.validate()
-              && _cardNameKey.currentState!.validate()
-              && _pwKey.currentState!.validate()) {
-              DocumentReference docRef = await addCard(_cardController.text, 
-                                                      cardNumber, 
-                                                      expiryDate, 
-                                                      cvvCode,
-                                                      _PWController.text);
+            if (formKey.currentState!.validate() &&
+                _cardNameKey.currentState!.validate() &&
+                _pwKey.currentState!.validate()) {
+              DocumentReference docRef = await addCard(_cardController.text,
+                  cardNumber, expiryDate, cvvCode, _PWController.text);
 
               Navigator.pop(context);
             }

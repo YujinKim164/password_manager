@@ -58,7 +58,7 @@ String encodeString(String text) {
 
   final encryptedText = base64.encode(encryptedBytes);
 
-  return text;
+  return encryptedText;
 }
 
 String decodeString(String encrpyted) {
@@ -92,9 +92,9 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
     return FirebaseFirestore.instance
       .collection('collection')
       .add(<String, dynamic>{
-        'thumbnail': appName,
-        'app_name': appName,
-        'link': appLink,
+        'thumbnail': encodeString(appName),
+        'app_name': encodeString(appName),
+        'link': encodeString(appLink),
         'ID': encodeString(ID),
         'password': encodeString(pswd),
         'favorites': 0
@@ -108,29 +108,18 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
         title: const Text("Add Social account"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
         child: Form(
           key : _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Website / App Name"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Website / App Name"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -140,25 +129,14 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _urlController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Website / AppLink"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Website / App Link"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -168,53 +146,31 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: _IDController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Email / ID"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Email / ID"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
-                      return "ID is empty.";
+                      return "Email/ID is empty.";
                     }
                     return null;
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(
-                    color: Colors.grey,
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
                   controller: socialPWController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    label: const Text("Password"),
-                    contentPadding: const EdgeInsets.all(5.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
+                  decoration: const InputDecoration(
+                    labelText: "Password"
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -224,7 +180,7 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
                   },
                 ),
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
 
               Align(
                 alignment: Alignment.bottomRight,
@@ -252,12 +208,7 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
               print(encodeString(_nameController.text));
               print(decodeString(encodeString(_nameController.text)));
               
-              _nameController.clear();
-              _urlController.clear();
-              _IDController.clear();
-              socialPWController.clear();
-              bankPWController.clear();
-              cardPWController.clear();
+              Navigator.pop(context);
             }
           },
           child: const Text('Create New'),

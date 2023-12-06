@@ -49,6 +49,7 @@ dependencies:
   pointycastle: ^3.7.3
   flutter_credit_card: ^4.0.1
   flutter_native_splash: ^2.3.6
+  credit_card_scanner: ^1.0.5
 
 dev_dependencies:
   flutter_test:

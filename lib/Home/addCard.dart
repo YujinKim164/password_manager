@@ -3,11 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:credit_card_scanner/credit_card_scanner.dart';
 
 import 'addSocial.dart';
-import 'addSocial.dart';
-import 'addBank.dart';
-import 'pwGenerator.dart';
 
 final cardPWController = TextEditingController();
 
@@ -20,9 +18,6 @@ class AddCard extends StatefulWidget {
 
 class _AddCardState extends State<AddCard> with ChangeNotifier {
   final _cardController = TextEditingController();
-  final _numberController = TextEditingController();
-  final _EXPController = TextEditingController();
-  final _CVVController = TextEditingController();
   final _PWController = TextEditingController();
 
   final _cardNameKey = GlobalKey<FormState>();
@@ -100,6 +95,14 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Card account"),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () async {
+                var cardDetail = await CardScanner.scanCard();
+                print(cardDetail);
+              },
+              icon: const Icon(Icons.camera_alt_outlined)),
+        ],
       ),
       body: Column(
         children: [
@@ -139,20 +142,23 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Form(
-                      key: _cardNameKey,
-                      child: TextFormField(
-                        controller: _cardController,
-                        decoration: const InputDecoration(
-                          labelText: "Card name",
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Cardname is empty";
-                          }
-                          return null;
-                        },
-                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Form(
+                        key: _cardNameKey,
+                        child: TextFormField(
+                          controller: _cardController,
+                          decoration: const InputDecoration(
+                            labelText: "Card name",
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Cardname is empty";
+                            }
+                            return null;
+                          },
+                        )),
+                  ),
                   CreditCardForm(
                     formKey: formKey,
                     obscureCvv: false,
@@ -183,20 +189,22 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
                     ),
                     onCreditCardModelChange: onCreditCardModelChange,
                   ),
-                  const SizedBox(height: 20),
-                  Form(
-                    key: _pwKey,
-                    child: TextFormField(
-                      controller: _PWController,
-                      decoration: const InputDecoration(
-                        labelText: "password",
+                  Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: Form(
+                      key: _pwKey,
+                      child: TextFormField(
+                        controller: _PWController,
+                        decoration: const InputDecoration(
+                          labelText: "password",
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "password is empty";
+                          }
+                          return null;
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "password is empty";
-                        }
-                        return null;
-                      },
                     ),
                   )
                 ],
@@ -215,6 +223,16 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
               DocumentReference docRef = await addCard(_cardController.text,
                   cardNumber, expiryDate, cvvCode, _PWController.text);
 
+              // AlertDialog(
+              //   title: const Text("Check"),
+              //   content: const Text("Do you really want to save?"),
+              //   actions: <Widget>[
+              //     TextButton(
+              //       onPressed: () => Navigator.pop(context),
+              //       child: const Text("OK")
+              //     ),
+              //   ],
+              // );
               Navigator.pop(context);
             }
           },

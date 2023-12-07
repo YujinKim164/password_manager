@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'dart:typed_data';
-import 'package:pointycastle/pointycastle.dart' as pt;
+
+import 'package:rive/rive.dart';
 
 import 'pwGenerator.dart';
 import 'addSocial.dart';
@@ -45,6 +43,8 @@ class _UpdateSocialPageState extends State<UpdateSocialPage> {
   final _IDController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool _visible = false;
   
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,16 @@ class _UpdateSocialPageState extends State<UpdateSocialPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Form(
+        child: _visible ? Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,  
+            color: Colors.green,
+            child: RiveAnimation.asset("assets/handshake.riv", fit: BoxFit.cover,),
+          ),
+        )
+        : Form(
           key : _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,11 +168,13 @@ class _UpdateSocialPageState extends State<UpdateSocialPage> {
                                 _urlController.text,
                                 _IDController.text,
                                 socialPWController.text);
-
-              print(encodeString(_nameController.text));
-              print(decodeString(encodeString(_nameController.text)));
               
-              Navigator.pop(context);
+              setState(() {
+                _visible = !_visible;
+              });
+              Future.delayed(Duration(milliseconds: 3000), () {
+                Navigator.pop(context);
+              });
             }
           },
           child: const Text('Create New'),

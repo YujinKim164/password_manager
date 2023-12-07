@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 import 'addSocial.dart';
 import 'addCard.dart';
@@ -23,6 +24,8 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
   final _IDController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool _visible = false;
 
   Future<DocumentReference> addBank(String bankName, String name, String accountNumber, String ID, String pswd) async {
     return FirebaseFirestore.instance
@@ -46,7 +49,16 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
       ),
       body: Padding(
         padding: const EdgeInsets.all(4.0),
-        child: Form(
+        child: _visible ? Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,  
+            color: Colors.green,
+            child: RiveAnimation.asset("assets/handshake.riv", fit: BoxFit.cover,),
+          ),
+        )
+        : Form(
           key : _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,7 +172,12 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                                                       _IDController.text,
                                                       bankPWController.text);
 
-              Navigator.pop(context);
+              setState(() {
+                _visible = !_visible;
+              });
+              Future.delayed(Duration(milliseconds: 3000), () {
+                Navigator.pop(context);
+              });
             }
           },
           child: const Text('Create New'),

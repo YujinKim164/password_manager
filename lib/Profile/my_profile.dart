@@ -74,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             if (user != null) ...[
               if (user!.photoURL != null) Image.network(user!.photoURL!),
-              Text('${user!.displayName ?? ""}'),
+              Text('$user!.displayName ?? ""'),
               Text('${user!.email ?? ""}'),
             ],
             const SizedBox(height: 80.0), // Buttons

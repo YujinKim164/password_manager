@@ -23,6 +23,7 @@ import 'Home/home_page.dart';
 import 'Home/updateCard.dart';
 import 'Home/updateBank.dart';
 import 'Home/updateSocial.dart';
+import 'Home/addSocial.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -76,7 +77,14 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UpdateCardPage())
+                    MaterialPageRoute(builder: (context) => UpdateCardPage(docRef: "xaA46a6arJObmgsrTgWz", 
+                      cardName: decodeString("OZDnzsHvMCcjnU1nuRXygQ=="),
+                      cardNumber: decodeString("W3Fbdvu5PNbhOU5kXGU+HsYtKINn2iCC2oDg3oq8pno="),
+                      exp: decodeString("1HITFNaKjHvEWGKynGMxxw=="),
+                      cvv: decodeString("bF56HS9eGQCRVYUOi9pAQw=="),
+                      cardHolder: decodeString("hzslC/a5DcW9jULj4QD+Ww=="),
+                      password: decodeString("RUZB4WE2TKrzTIdcDvW7jQ==")
+                    ))
                   );
                 }, 
                 child: const Text("UpdateCard")
@@ -84,7 +92,13 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UpdateBankPage())
+                    MaterialPageRoute(builder: (context) => UpdateBankPage(docRef: "47evP7Z3NgXk72RLlbNp",
+                      bankName: decodeString("etSs6sSwvZBvQOTucSYYBw=="),
+                      cardNumber: decodeString("jlAIK3C4+AeSo6yQ04xeZA=="),
+                      name: decodeString("3OR8YLbBWkO3F8yKgc+BGg=="),
+                      id: decodeString("7ZW7taESp15hpRb2tiSFvQ=="),
+                      password: decodeString("2gJ1mnS1BzzWK7DrNTFsAg=="),
+                      ))
                   );
                 }, 
                 child: const Text("UpdateBank")
@@ -92,7 +106,11 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UpdateSocialPage())
+                    MaterialPageRoute(builder: (context) => UpdateSocialPage(docRef: "UfsciS0QOdgZLGkAmD5X",
+                      appName: decodeString("L/4kf93AJPCtCuvYkX9f9w=="),
+                      link: decodeString("evMZLPDtJMFe4W4v/PfW866+HyLFnAETQ0snzkvwSI8="),
+                      id: decodeString("7ZW7taESp15hpRb2tiSFvQ=="),
+                      password: decodeString("yUiapJi0Nraplq8B0HheYg=="),))
                   );
                 }, 
                 child: const Text("UpdateSocial")

@@ -2,13 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:password_manager/Home/addBank.dart';
-import 'package:password_manager/Home/addCard.dart';
 import 'package:provider/provider.dart';
 import 'dart:typed_data';
 import 'package:pointycastle/pointycastle.dart' as pt;
 
-import 'package:password_manager/app_state.dart';
 import 'pwGenerator.dart';
 
 final socialPWController = TextEditingController();

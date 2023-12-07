@@ -57,14 +57,6 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
 
   @override
   Widget build(BuildContext context) {
-    void _onValidate() {
-      if (formKey.currentState?.validate() ?? false) {
-        print('valid!');
-      } else {
-        print('invalid!');
-      }
-    }
-
     Glassmorphism? _getGlassmorphismConfig() {
       if (!useGlassMorphism) {
         return null;
@@ -223,16 +215,6 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
               DocumentReference docRef = await addCard(_cardController.text,
                   cardNumber, expiryDate, cvvCode, _PWController.text);
 
-              // AlertDialog(
-              //   title: const Text("Check"),
-              //   content: const Text("Do you really want to save?"),
-              //   actions: <Widget>[
-              //     TextButton(
-              //       onPressed: () => Navigator.pop(context),
-              //       child: const Text("OK")
-              //     ),
-              //   ],
-              // );
               Navigator.pop(context);
             }
           },

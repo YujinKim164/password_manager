@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Profile/my_profile.dart';
 import 'addBank.dart';
 import 'addCard.dart';
@@ -20,40 +21,84 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildCategoryCard(
-            context,
-            'Socials',
-            Icons.people,
-            () {
-              Navigator.push(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildCategoryCard(
                 context,
-                MaterialPageRoute(builder: (context) => AddSocial()),
-              );
-            },
+                'Socials',
+                Icons.people,
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddSocial()),
+                  );
+                },
+              ),
+              _buildCategoryCard(
+                context,
+                'Accounts',
+                Icons.account_balance_wallet,
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddBank()),
+                  );
+                },
+              ),
+              _buildCategoryCard(
+                context,
+                'Cards',
+                Icons.credit_card,
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddCard()),
+                  );
+                },
+              ),
+            ],
           ),
-          _buildCategoryCard(
-            context,
-            'Accounts',
-            Icons.account_balance_wallet,
-            () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddBank()),
-              );
-            },
-          ),
-          _buildCategoryCard(
-            context,
-            'Cards',
-            Icons.credit_card,
-            () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddCard()),
-              );
+          StreamBuilder(
+            stream:
+                FirebaseFirestore.instance.collection('collection').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
+                List<DocumentSnapshot> documents = snapshot.data!.docs;
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: documents.length,
+                    itemBuilder: (context, index) {
+                      var document = documents[index];
+                      // Check if 'app_name' field exists in the document
+                      if (document.data() != null &&
+                          document.data() is Map &&
+                          (document.data() as Map).containsKey('app_name')) {
+                        var appName = document['app_name'];
+                        var decodedAppName = decodeString(appName);
+                        return _buildCategoryCard(
+                          context,
+                          decodedAppName,
+                          Icons.facebook, // Replace with the appropriate icon
+                          () {
+                            // Add your logic when the card is tapped
+                          },
+                        );
+                      } else {
+                        // Handle the case where 'app_name' field is not present
+                        return Container();
+                      }
+                    },
+                  ),
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             },
           ),
         ],

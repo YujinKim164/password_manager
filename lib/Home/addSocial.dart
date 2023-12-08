@@ -8,6 +8,7 @@ import 'package:rive/rive.dart';
 import 'package:pointycastle/pointycastle.dart' as pt;
 
 import 'pwGenerator.dart';
+import 'addBank.dart';
 
 final socialPWController = TextEditingController();
 const ekey = "abcdefghijtuvwxyz1234klmnopqrs56";
@@ -106,6 +107,14 @@ class _AddSocialState extends State<AddSocial> with ChangeNotifier {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Social account"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            socialPWController.text = "";
+            bankPWController.text = "";
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),

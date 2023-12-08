@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:password_manager/Home/addBank.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:credit_card_scanner/credit_card_scanner.dart';
@@ -91,12 +92,13 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
       appBar: AppBar(
         title: const Text("Add Card account"),
         actions: <Widget>[
-          IconButton(
-              onPressed: () async {
-                var cardDetail = await CardScanner.scanCard();
-                print(cardDetail);
-              },
-              icon: const Icon(Icons.camera_alt_outlined)),
+          // IconButton(
+          //   onPressed: () async {
+          //     var cardDetail = await CardScanner.scanCard();
+          //     print(cardDetail);
+          //   },
+          //   icon: const Icon(Icons.camera_alt_outlined)
+          // ),
         ],
       ),
       body: _visible ? Center(

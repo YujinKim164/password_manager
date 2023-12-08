@@ -6,6 +6,7 @@ import 'package:rive/rive.dart';
 
 import 'pwGenerator.dart';
 import 'addSocial.dart';
+import 'addBank.dart';
 
 Future<void> updateSocial(String docRef, String appName, String link, String id, String password) async {
   return await FirebaseFirestore.instance.collection('collection').doc(docRef).update({
@@ -60,6 +61,14 @@ class _UpdateSocialPageState extends State<UpdateSocialPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('UPDATE'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            socialPWController.text = "";
+            bankPWController.text = "";
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),

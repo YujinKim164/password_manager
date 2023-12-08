@@ -47,8 +47,25 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Bank account"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            socialPWController.text = "";
+            bankPWController.text = "";
+            Navigator.pop(context);
+          },
+        ),
       ),
-      body: Padding(
+      body: _visible ? Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,  
+            color: Colors.green,
+            child: RiveAnimation.asset("assets/handshake.riv", fit: BoxFit.cover,),
+          ),
+        )
+        : Padding(
           padding: const EdgeInsets.all(4.0),
           child: Form(
             key: _formKey,

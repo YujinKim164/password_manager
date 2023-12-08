@@ -68,6 +68,14 @@ class _UpdateBankPageState extends State<UpdateBankPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('UPDATE'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            socialPWController.text = "";
+            bankPWController.text = "";
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: _visible ? Center(
           child: Container(

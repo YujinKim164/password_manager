@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 import 'addSocial.dart';
 import 'addCard.dart';
@@ -50,6 +51,8 @@ class _UpdateBankPageState extends State<UpdateBankPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool _visible = false;
+
   @override
   Widget build(BuildContext context) {
     void init() {
@@ -66,7 +69,16 @@ class _UpdateBankPageState extends State<UpdateBankPage> {
       appBar: AppBar(
         title: const Text('UPDATE'),
       ),
-      body: Padding(
+      body: _visible ? Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,  
+            color: Colors.green,
+            child: RiveAnimation.asset("assets/handshake.riv", fit: BoxFit.cover,),
+          ),
+        )
+        : Padding(
         padding: const EdgeInsets.all(4.0),
         child: Form(
           key : _formKey,
@@ -183,7 +195,12 @@ class _UpdateBankPageState extends State<UpdateBankPage> {
                                 _IDController.text,
                                 bankPWController.text);
 
-              Navigator.pop(context);
+              setState(() {
+                _visible = !_visible;
+              });
+              Future.delayed(Duration(milliseconds: 3000), () {
+                Navigator.pop(context);
+              });
             }
           },
           child: const Text('Update'),

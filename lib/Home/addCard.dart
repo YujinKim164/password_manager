@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:credit_card_scanner/credit_card_scanner.dart';
+import 'package:rive/rive.dart' as rv;
 
 import 'addSocial.dart';
 
@@ -39,6 +40,8 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
     ),
   );
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  bool _visible = false;
 
   Future<DocumentReference> addCard(String cardName, String cardNumber,
       String exp, String cvv, String pswd) async {
@@ -96,7 +99,16 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
               icon: const Icon(Icons.camera_alt_outlined)),
         ],
       ),
-      body: Column(
+      body: _visible ? Center(
+          child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,  
+            color: Colors.green,
+            child: rv.RiveAnimation.asset("assets/handshake.riv", fit: BoxFit.cover,),
+          ),
+        )
+        : Column(
         children: [
           CreditCardWidget(
             enableFloatingCard: useFloatingAnimation,
@@ -215,7 +227,12 @@ class _AddCardState extends State<AddCard> with ChangeNotifier {
               DocumentReference docRef = await addCard(_cardController.text,
                   cardNumber, expiryDate, cvvCode, _PWController.text);
 
-              Navigator.pop(context);
+              setState(() {
+                _visible = !_visible;
+              });
+              Future.delayed(Duration(milliseconds: 3000), () {
+                Navigator.pop(context);
+              });
             }
           },
           child: const Text('Create New'),

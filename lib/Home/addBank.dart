@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 import 'addSocial.dart';
 import 'addCard.dart';
@@ -23,6 +24,8 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
   final _IDController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool _visible = false;
 
   Future<DocumentReference> addBank(String bankName, String name,
       String accountNumber, String id, String pswd) async {
@@ -162,7 +165,12 @@ class _AddBankState extends State<AddBank> with ChangeNotifier {
                   _IDController.text,
                   bankPWController.text);
 
-              Navigator.pop(context);
+              setState(() {
+                _visible = !_visible;
+              });
+              Future.delayed(Duration(milliseconds: 3000), () {
+                Navigator.pop(context);
+              });
             }
           },
           child: const Text('Create New'),
